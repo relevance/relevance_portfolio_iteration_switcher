@@ -1,0 +1,23 @@
+<script><%= javascript %></script>
+<style><%= css %></style>
+<div id='relevance-switcher-wrapper'>
+  <div id='relevance-switcher-bar'>
+    <div class='relevance-switcher-width-960'>
+      <a class='relevance-switcher-bar-button relevance-switcher-right' href='#' id='relevance-switcher-hide-button'>hide</a>
+      <a class='relevance-switcher-bar-button relevance-switcher-left' href='http://portfolio.thinkrelevance.com/'>&laquo; Back to Portfolio</a>
+      <div class='relevance-switcher-center'>
+        You are using a demo of
+        <a class='relevance-switcher-bar-button' href='#' id='relevance-switcher-iteration-button'>Iteration <%= current_iteration %></a>
+      </div>
+    </div>
+  </div>
+  <a href='#' id='relevance-switcher-show-button'>show</a>
+  <div class='relevance-switcher-width-960'>
+    <div id='relevance-switcher-iteration-list'>
+      <div class='relevance-switcher-point-up'></div>
+      <% iterations.each do |(number, url)| %>
+        <a href="<%= url %>">Iteration <%= number %></a>
+      <% end %>
+    </div>
+  </div>
+</div>
