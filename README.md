@@ -22,3 +22,9 @@ file.
         ...
         42 => 'http://iteration-42.example.com'
       }
+      # Optional HTTP Auth credentials
+      # Must be the same for all urls
+      :http_auth => {
+        :username => 'john.doe',
+        :password => 'password'
+      }

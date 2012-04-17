@@ -11,19 +11,6 @@ module RelevancePortfolioIterationSwitcher
       @http_auth = opts[:http_auth]
     end
 
-    def build_url(url)
-      return url unless @http_auth
-
-      protocol, uri = detect_protocol(url)
-      username, password = [@http_auth[:username], @http_auth[:password]].map { |part| CGI.escape part }
-      "#{protocol}#{username}:#{password}@#{uri}"
-    end
-
-    def detect_protocol(url)
-      match = url.match(/^(https?:\/\/)?(.*)$/)
-      [match[1], match[2]]
-    end
-
     def call(env)
       status, headers, response = @app.call(env)
 
@@ -33,7 +20,21 @@ module RelevancePortfolioIterationSwitcher
       [status, headers, response]
     end
 
+    # Helper method for building urls with baked in http auth
+    def build_url(url)
+      return url unless http_auth
+
+      protocol, uri = detect_protocol(url)
+      username, password = [:username, :password].map { |part| CGI.escape http_auth[part] }
+      "#{protocol}#{username}:#{password}@#{uri}"
+    end
+
     private
+
+    def detect_protocol(url)
+      match = url.match(/^(https?:\/\/)?(.*)$/)
+      [match[1], match[2]]
+    end
 
     def fix_content_length(headers, response)
       length = response.to_ary.inject(0) { |len, part| len + part.bytesize }
