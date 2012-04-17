@@ -16,7 +16,7 @@
     <div id='relevance-switcher-iteration-list'>
       <div class='relevance-switcher-point-up'></div>
       <% iterations.each do |(number, url)| %>
-        <a href="<%= url %>">Iteration <%= number %></a>
+        <a href="<%= build_url url %>">Iteration <%= number %></a>
       <% end %>
     </div>
   </div>

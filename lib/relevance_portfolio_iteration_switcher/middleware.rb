@@ -1,13 +1,27 @@
 module RelevancePortfolioIterationSwitcher
   class Middleware
 
-    attr_reader :current_iteration, :iterations
+    attr_reader :current_iteration, :iterations, :http_auth
 
     def initialize(app, opts = {})
       @app = app
 
       @current_iteration = opts[:current_iteration]
       @iterations = opts[:iterations].sort_by { |(iteration_number,link)| iteration_number }
+      @http_auth = opts[:http_auth]
+    end
+
+    def build_url(url)
+      return url unless @http_auth
+
+      protocol, uri = detect_protocol(url)
+      username, password = [@http_auth[:username], @http_auth[:password]].map { |part| CGI.escape part }
+      "#{protocol}#{username}:#{password}@#{uri}"
+    end
+
+    def detect_protocol(url)
+      match = url.match(/^(https?:\/\/)?(.*)$/)
+      [match[1], match[2]]
     end
 
     def call(env)
